@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 from reader import Reader
-from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
 
 
-class Linear_regression:
+class Nearest_neighbor:
     def __init__(self, dataset):
         self.dataset = dataset
         self.x = []
@@ -27,13 +27,12 @@ class Linear_regression:
         return self.y
 
     def calculate(self):
-        """Метод подсчета данных для линейной регрессии."""
+        """Метод подсчета данных для метода ближайших соседей."""
         x = self.x_preparation()
         y = self.y_preparation()
-        model = LinearRegression().fit(x, y)
-        self.r_sq = model.score(x, y)
+        model = KNeighborsRegressor(n_neighbors=10).fit(x, y)
         self.result = model.predict(x)
-        return self.r_sq, self.result
+        return self.result
 
     @staticmethod
     def get_price_data():
@@ -53,23 +52,21 @@ class Linear_regression:
         time = []
         for i in close_time:
             time += [datetime.datetime(int(i[:4]), int(i[4:6]), int(i[6:8]), int(i[8:10]), int(i[10:12]))]
-        time +=[time]
         return time
 
 
-"""Выделение данных и получения данных линейной регрессии"""
+"""Выделение данных и получения данных метода ближайших соседей"""
 
-dataset = Linear_regression.get_price_data()
-time = Linear_regression.get_price_time()
-new = Linear_regression(dataset)
-r_sq, result = new.calculate()
-print("Coefficient of determination = ", r_sq)
+dataset = Nearest_neighbor.get_price_data()
+time = Nearest_neighbor.get_price_time()
+new = Nearest_neighbor(dataset)
+result = new.calculate()
 
 """Вывод на графики полученных данных"""
 
 fig, ax = plt.subplots()
 ax.plot(time[:len(dataset)], dataset, label='Исходные данные')
-ax.plot(time[:len(result)], result, label='Линейная регрессия')
+ax.plot(time[:len(result)], result, label='Метод ближайших соседей')
 ax.set_xlabel('Время (мин)')
 ax.set_ylabel('Цена (руб)')
 ax.legend()
