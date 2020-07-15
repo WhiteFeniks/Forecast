@@ -65,8 +65,10 @@ result = new.calculate()
 """Вывод на графики полученных данных"""
 
 fig, ax = plt.subplots()
-ax.plot(time[:len(dataset)], dataset, label='Исходные данные')
-ax.plot(time[:len(result)], result, label='Метод ближайших соседей')
+# ax.plot(time[:len(dataset)], dataset, label='Исходные данные')
+# ax.plot(time[:len(result)], result, label='Метод ближайших соседей')
+ax.plot(dataset, label='Исходные данные')
+ax.plot(result, label='Метод ближайших соседей')
 ax.set_xlabel('Время (мин)')
 ax.set_ylabel('Цена (руб)')
 ax.legend()

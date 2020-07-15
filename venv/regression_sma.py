@@ -6,9 +6,9 @@ from reader import Reader
 
 class Simple_moving_average:
     def __call__(self, values, window=1):
-        """Метод подсчёта Simple moving average с помощью свертки и окна"."""
+        """Метод подсчёта Simple moving average с помощью свертки и окна."""
         weights = np.repeat(1.0, window) / window
-        smas = np.convolve(values, weights, 'valid')
+        smas = np.convolve(values, weights)
         return smas
 
     @staticmethod
@@ -29,7 +29,6 @@ class Simple_moving_average:
         time = []
         for i in close_time:
             time += [datetime.datetime(int(i[:4]), int(i[4:6]), int(i[6:8]), int(i[8:10]), int(i[10:12]))]
-        time +=[time]
         return time
 
 
@@ -38,14 +37,16 @@ dataset = Simple_moving_average.get_price_data()
 time = Simple_moving_average.get_price_time()
 
 """SMA данные"""
-window = 3
+window = 10
 sma = Simple_moving_average()
 result = sma(dataset, window)
+result = list(result[9:])
+result = result[:7615]
 
 """Вывод на графики полученных данных"""
 fig, ax = plt.subplots()
-ax.plot(time[:len(dataset)], dataset, label='Исходные данные')
-ax.plot(time[:len(result)], result, label='SMA данные')
+ax.plot(dataset, label='Исходные данные')
+ax.plot(result, label='SMA данные')
 ax.set_xlabel('Время (мин)')
 ax.set_ylabel('Цена (руб)')
 ax.legend()
