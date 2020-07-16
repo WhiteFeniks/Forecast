@@ -9,15 +9,22 @@ class UpDown_classifier:
     def __init__(self, real, reg_result, window=1):
         self.real = real
         self.reg_result = reg_result
-        self.window = window
+        self.window = window - 1
+        self.count_true = 0
 
     def calculate(self):
         """Метод сравнения реальной цены с предсказанной """
-        for x, y in zip(self.real[self.window:], self.reg_result):
-            if x <= y:
-                print(" True: real {0:6.4f} <= predicted {1:6.4f} ".format(x, y))
+        for x, y, z in zip(self.real[self.window:], self.reg_result, self.real[self.window + 1:]):
+            if x < y and x < z:
+                print("  True: before real = {0:10.6f}, predicted = {1:10.6f} and after "
+                      "real = {2:10.6f} ".format(x, y, z))
+                self.count_true += 1
             else:
-                print("False: real {0:6.4f} <= predicted {1:6.4f} ".format(x, y))
+                print(" False: before real = {0:10.6f}, predicted = {1:10.6f} and after "
+                      "real = {2:10.6f} ".format(x, y, z))
+        print("------------------------------------------------------------------------------------")
+        accuracy = self.count_true / (len(self.reg_result) - 1)
+        print("Accuracy =", accuracy)
 
 
 class Regression:
@@ -41,10 +48,9 @@ class Regression:
         sma = Simple_moving_average()
         data_sma = list(sma(data_real, window))
         result = UpDown_classifier(data_real, data_sma, window)
-        print("{:^41}".format("SMA method"))
-        print("-----------------------------------------")
+        print("{:^84}".format("SMA method"))
+        print("------------------------------------------------------------------------------------")
         result.calculate()
-        print("-----------------------------------------\n\n\n\n\n")
 
     def method_reg_lin(self):
         """ Для Linear regression """
@@ -53,10 +59,9 @@ class Regression:
         new = Linear_regression(data_real, window)
         r_sq, data_linear = new.calculate()
         result = UpDown_classifier(data_real, data_linear, window)
-        print("{:^41}".format("Linear regression method"))
-        print("-----------------------------------------")
+        print("{:^84}".format("Linear regression method"))
+        print("------------------------------------------------------------------------------------")
         result.calculate()
-        print("-----------------------------------------\n\n\n\n\n")
 
     def method_neighbor(self):
         """ Для Nearest neighbor """
@@ -65,10 +70,10 @@ class Regression:
         new = Nearest_neighbor(data_real, window)
         data_neighbor = new.calculate()
         result = UpDown_classifier(data_real, data_neighbor, window)
-        print("{:^41}".format("Nearest neighbor method"))
-        print("-----------------------------------------")
+        print("{:^84}".format("Nearest neighbor method"))
+        print("------------------------------------------------------------------------------------")
         result.calculate()
-        print("-----------------------------------------\n\n\n\n\n")
+
 
 
 print("Choose method number: \n1. Simple Moving Average\n2. "
@@ -76,3 +81,4 @@ print("Choose method number: \n1. Simple Moving Average\n2. "
 method = int(input())
 x = Regression(method)
 x.make()
+
