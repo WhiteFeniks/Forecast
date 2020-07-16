@@ -6,8 +6,9 @@ from sklearn.neighbors import KNeighborsRegressor
 
 
 class Nearest_neighbor:
-    def __init__(self, dataset):
+    def __init__(self, dataset, window=1):
         self.dataset = dataset
+        self.window = window
         self.x = []
         self.y = []
         self.r_sq = 0.0
@@ -16,8 +17,8 @@ class Nearest_neighbor:
     def x_preparation(self):
         """Для получения x в методе для обучения с учителем """
         for i in range(len(self.dataset)):
-            if i + 10 < len(self.dataset):
-                self.x += [self.dataset[i: i + 10]]
+            if i + self.window < len(self.dataset):
+                self.x += [self.dataset[i: i + self.window]]
         return self.x
 
     def y_preparation(self):
@@ -30,7 +31,7 @@ class Nearest_neighbor:
         """Метод подсчета данных для метода ближайших соседей."""
         x = self.x_preparation()
         y = self.y_preparation()
-        model = KNeighborsRegressor(n_neighbors=10).fit(x, y)
+        model = KNeighborsRegressor(n_neighbors=self.window).fit(x, y)
         self.result = model.predict(x)
         return self.result
 
@@ -56,20 +57,20 @@ class Nearest_neighbor:
 
 
 """Выделение данных и получения данных метода ближайших соседей"""
-
+window = 10
 dataset = Nearest_neighbor.get_price_data()
 time = Nearest_neighbor.get_price_time()
-new = Nearest_neighbor(dataset)
+new = Nearest_neighbor(dataset, window)
 result = new.calculate()
 
 """Вывод на графики полученных данных"""
-
-fig, ax = plt.subplots()
 # ax.plot(time[:len(dataset)], dataset, label='Исходные данные')
 # ax.plot(time[:len(result)], result, label='Метод ближайших соседей')
-ax.plot(dataset, label='Исходные данные')
-ax.plot(result, label='Метод ближайших соседей')
-ax.set_xlabel('Время (мин)')
-ax.set_ylabel('Цена (руб)')
-ax.legend()
-plt.show()
+
+# fig, ax = plt.subplots()
+# ax.plot(dataset, label='Исходные данные')
+# ax.plot(result, label='Метод ближайших соседей')
+# ax.set_xlabel('Время (мин)')
+# ax.set_ylabel('Цена (руб)')
+# ax.legend()
+# plt.show()

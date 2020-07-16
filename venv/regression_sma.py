@@ -9,6 +9,8 @@ class Simple_moving_average:
         """Метод подсчёта Simple moving average с помощью свертки и окна."""
         weights = np.repeat(1.0, window) / window
         smas = np.convolve(values, weights)
+        smas = list(smas[9:])
+        smas = smas[:7615]
         return smas
 
     @staticmethod
@@ -40,14 +42,13 @@ time = Simple_moving_average.get_price_time()
 window = 10
 sma = Simple_moving_average()
 result = sma(dataset, window)
-result = list(result[9:])
-result = result[:7615]
+
 
 """Вывод на графики полученных данных"""
-fig, ax = plt.subplots()
-ax.plot(dataset, label='Исходные данные')
-ax.plot(result, label='SMA данные')
-ax.set_xlabel('Время (мин)')
-ax.set_ylabel('Цена (руб)')
-ax.legend()
-plt.show()
+# fig, ax = plt.subplots()
+# ax.plot(dataset, label='Исходные данные')
+# ax.plot(result, label='SMA данные')
+# ax.set_xlabel('Время (мин)')
+# ax.set_ylabel('Цена (руб)')
+# ax.legend()
+# plt.show()

@@ -6,8 +6,9 @@ from sklearn.linear_model import LinearRegression
 
 
 class Linear_regression:
-    def __init__(self, dataset):
+    def __init__(self, dataset, window=1):
         self.dataset = dataset
+        self.window = window
         self.x = []
         self.y = []
         self.r_sq = 0.0
@@ -16,13 +17,13 @@ class Linear_regression:
     def x_preparation(self):
         """Для получения x в методе для обучения с учителем """
         for i in range(len(self.dataset)):
-            if i + 10 < len(self.dataset):
-                self.x += [self.dataset[i: i + 10]]
+            if i + self.window < len(self.dataset):
+                self.x += [self.dataset[i: i + self.window]]
         return self.x
 
     def y_preparation(self):
         """Для получения y в методе для обучения с учителем """
-        for i in dataset[10:]:
+        for i in dataset[self.window:]:
             self.y += [i]
         return self.y
 
@@ -58,21 +59,21 @@ class Linear_regression:
 
 
 """Выделение данных и получения данных линейной регрессии"""
-
+window = 10
 dataset = Linear_regression.get_price_data()
 time = Linear_regression.get_price_time()
-new = Linear_regression(dataset)
+new = Linear_regression(dataset, window)
 r_sq, result = new.calculate()
-print("Coefficient of determination = ", r_sq)
+# print("Coefficient of determination = ", r_sq)
 
 """Вывод на графики полученных данных"""
-
-fig, ax = plt.subplots()
 # ax.plot(time[:len(dataset)], dataset, label='Исходные данные')
 # ax.plot(time[:len(result)], result, label='Линейная регрессия')
-ax.plot(dataset, label='Исходные данные')
-ax.plot(result, label='Линейная регрессия')
-ax.set_xlabel('Время (мин)')
-ax.set_ylabel('Цена (руб)')
-ax.legend()
-plt.show()
+
+# fig, ax = plt.subplots()
+# ax.plot(dataset, label='Исходные данные')
+# ax.plot(result, label='Линейная регрессия')
+# ax.set_xlabel('Время (мин)')
+# ax.set_ylabel('Цена (руб)')
+# ax.legend()
+# plt.show()
