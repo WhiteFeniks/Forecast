@@ -3,7 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from reader import Reader
 from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_squared_error
+
 
 
 def get_price_data():
@@ -65,27 +67,31 @@ z_test = z[slice:]
 # print("z_test =", z_test)
 
 
-"""Линейная регрессия"""
-reg_all = LinearRegression()
-reg_all.fit(X_train, y_train)
+# """Линейная регрессия"""
+# reg_all = LinearRegression()
+# reg_all.fit(X_train, y_train)
+#
+# y_pred = reg_all.predict(X_test)
+#
+# # print("R^2: {}".format(reg_all.score(X_test, y_test)))
+# rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+# # print("Root Mean Squared Error: {}".format(rmse))
 
-y_pred = reg_all.predict(X_test)
+"""Ближайшие соседи"""
+model = KNeighborsRegressor(n_neighbors=window).fit(X_train, y_train)
+y_pred = model.predict(X_test)
 
-# print("R^2: {}".format(reg_all.score(X_test, y_test)))
-rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-# print("Root Mean Squared Error: {}".format(rmse))
-
-
-# """Вывод на графики полученных данных"""
-# fig, ax = plt.subplots()
-# print("исходные данные: ", y_test)
-# print("предсказанные данные : ", list(y_pred))
-# ax.plot(y_test, label='Исходные данные')
+"""Вывод на графики полученных данных"""
+fig, ax = plt.subplots()
+print("исходные данные: ", y_test)
+print("предсказанные данные : ", list(y_pred))
+ax.plot(y_test, label='Исходные данные')
+ax.plot(y_pred, label='Метод ближайших соседей')
 # ax.plot(y_pred, label='Линейная регрессия')
-# ax.set_xlabel('Время (мин)')
-# ax.set_ylabel('Цена (руб)')
-# ax.legend()
-# plt.show()
+ax.set_xlabel('Время (мин)')
+ax.set_ylabel('Цена (руб)')
+ax.legend()
+plt.show()
 
 print("z_test", len(z_test))
 print("y_test", len(y_test))
@@ -118,8 +124,8 @@ print("Accuracy =", accuracy)
 # print("Slice =", slice)
 # print("X_train =", X_train)
 # print("X_test =", X_test)
-print("y_train =", len(y_train))
-print("y_test =", len(y_test))
+# print("y_train =", len(y_train))
+# print("y_test =", len(y_test))
 
 
 

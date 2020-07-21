@@ -19,6 +19,10 @@ class UpDown_classifier:
                 print("  True: before real = {0:10.6f}, predicted = {1:10.6f} and after "
                       "real = {2:10.6f} ".format(x, y, z))
                 self.count_true += 1
+            if x > y and x > z:
+                print("  True: before real = {0:10.6f}, predicted = {1:10.6f} and after "
+                      "real = {2:10.6f} ".format(x, y, z))
+                self.count_true += 1
             else:
                 print(" False: before real = {0:10.6f}, predicted = {1:10.6f} and after "
                       "real = {2:10.6f} ".format(x, y, z))

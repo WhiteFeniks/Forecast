@@ -34,6 +34,11 @@ y = y_preparation(dataset, window)
 print("X =", X)
 print("y =", y)
 X = np.array(X).T
+
+print("X[0]", len(X[0]))
+print("X[1]", X[1])
+print("X[2]", X[2])
+print("X[3]", X[3])
 y = np.array(y)
 
 tscv = TimeSeriesSplit(n_splits=9)
@@ -44,6 +49,6 @@ for train_index, test_index in tscv.split(X):
     X_train, X_test = X[train_index], X[test_index]
     print("X_train = ", X_train, "\nX_test = ", X_test)
     y_train, y_test = y[train_index], y[test_index]
-    print("y_train = ", y_train, "y_test = ", y_test)
+    print("len(y_train) = ", len(y_train), "len(y_test) = ", len(y_test))
     print("-------------------------------------------------------------------------------------------------------------------------")
 
