@@ -8,33 +8,33 @@ from sklearn.linear_model import LinearRegression
 class Linear_regression(Regression):
     """Метод использующий линейную регрессию для предсказания данных"""
     def callculate(self):
-        reg_linear = LinearRegression().fit(self.x_train, self.y_train)
-        y_pred = reg_linear.predict(self.x_test)
-        return y_pred
+        reg_linear = LinearRegression().fit(self.X_train, self.y_train)
+        y_pred = []
+        for i in range(len(X_test)):
+            y_pred.extend(reg_linear.predict(self.X_test[i]))
+        real = []
+        for j in range(len(self.y_test)):
+            real.extend(self.y_test[j])
+        return y_pred, real
 
-
-def main(window, Pk, P0, Ptest):
-    count = 0
-    k = (Pk - P0) / Ptest
-    data_real = []
-    data_lin = []
-    while count < k:
-        lin_price = list(Linear_regression(window, P0, Ptest, count).callculate())
-        data_lin.extend(lin_price)
-        data_real.extend(list(Linear_regression(window, P0, Ptest, count).y_test))
-        count += 1
-    return data_real, data_lin
 
 window = 10
 Pk = 1
 P0 = 0.1
 Ptest = 0.01
+filename = 'USD000000TOD_1M_131001_131231.txt'
 
-data_real, data_lin = main(window, Pk, P0, Ptest)
+X_train, X_test, y_train, y_test = Reader(filename, Pk, P0, Ptest, window).train_test()
+y_pred, real = Linear_regression(X_train, X_test, y_train, y_test).callculate()
+
+print("data_real", len(real), real)
+print("data_lin", len(y_pred), y_pred)
+
+
 
 fig, ax = plt.subplots()
-ax.plot(data_real, label='Исходные данные')
-ax.plot(data_lin, label='Данные с метода линейной регрессии')
+ax.plot(real, label='Исходные данные')
+ax.plot(y_pred, label='Данные с метода ближайших соседей')
 ax.set_xlabel('Время (мин)')
 ax.set_ylabel('Цена, (руб)')
 ax.legend()

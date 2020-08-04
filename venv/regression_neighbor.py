@@ -8,40 +8,32 @@ from sklearn.neighbors import KNeighborsRegressor
 class Nearest_neighbor(Regression):
     """Метод использующий ближайших соседей для предсказания данных"""
     def callculate(self):
-        reg_neighbor = KNeighborsRegressor(n_neighbors=3)
-        reg_neighbor.fit(self.x_train, self.y_train)
-        y_pred = reg_neighbor.predict(self.x_test)
-        # print("Предсказанное значение:", *list(y_pred))
-        return y_pred
+        reg_neighbor = KNeighborsRegressor(n_neighbors=1)
+        reg_neighbor.fit(self.X_train, self.y_train)
+        y_pred = []
+        for i in range(len(X_test)):
+            y_pred.extend(reg_neighbor.predict(self.X_test[i]))
+        real = []
+        for j in range(len(self.y_test)):
+            real.extend(self.y_test[j])
+        return y_pred, real
 
-
-def main(window, Pk, P0, Ptest):
-    count = 0
-    k = (Pk - P0) / Ptest
-    data_real = []
-    data_neigh = []
-    while count < k:
-        neighbor = list(Nearest_neighbor(window, P0, Ptest, count).callculate())
-        data_neigh.extend(neighbor)
-        data_real.extend(list(Nearest_neighbor(window, P0, Ptest, count).y_test))
-        count += 1
-    return data_real, data_neigh
 
 window = 10
 Pk = 1
 P0 = 0.1
 Ptest = 0.01
+filename = 'USD000000TOD_1M_131001_131231.txt'
 
-data_real, data_neigh, = main(window, Pk, P0, Ptest)
+X_train, X_test, y_train, y_test = Reader(filename, Pk, P0, Ptest, window).train_test()
+y_pred, real = Nearest_neighbor(X_train, X_test, y_train, y_test).callculate()
 
-# window = 3
-# P0 = 7 / 11
-# Ptest = 4/11
-# neighbor = Nearest_neighbor(window, P0, Ptest, 0).callculate()
+print("data_real", len(real), real)
+print("data_neigh", len(y_pred), y_pred)
 
 fig, ax = plt.subplots()
-ax.plot(data_real, label='Исходные данные')
-ax.plot(data_neigh, label='Данные с метода ближайших соседей')
+ax.plot(real, label='Исходные данные')
+ax.plot(y_pred, label='Данные с метода ближайших соседей')
 ax.set_xlabel('Время (мин)')
 ax.set_ylabel('Цена, (руб)')
 ax.legend()
