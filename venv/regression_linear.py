@@ -27,15 +27,13 @@ filename = 'USD000000TOD_1M_131001_131231.txt'
 X_train, X_test, y_train, y_test = Reader(filename, Pk, P0, Ptest, window).train_test()
 y_pred, real = Linear_regression(X_train, X_test, y_train, y_test).callculate()
 
-print("data_real", len(real), real)
-print("data_lin", len(y_pred), y_pred)
+# print("data_real", len(real), real)
+# print("data_lin", len(y_pred), y_pred)
 
-
-
-fig, ax = plt.subplots()
-ax.plot(real, label='Исходные данные')
-ax.plot(y_pred, label='Данные с метода ближайших соседей')
-ax.set_xlabel('Время (мин)')
-ax.set_ylabel('Цена, (руб)')
-ax.legend()
-plt.show()
+# fig, ax = plt.subplots()
+# ax.plot(real, label='Исходные данные')
+# ax.plot(y_pred, label='Данные с линейной регрессии')
+# ax.set_xlabel('Время (мин)')
+# ax.set_ylabel('Цена, (руб)')
+# ax.legend()
+# plt.show()

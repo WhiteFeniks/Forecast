@@ -25,13 +25,13 @@ X_train, X_test, y_train, y_test = Reader(filename, Pk, P0, Ptest, window).train
 y_pred = Simple_moving_average(X_train, X_test, y_train, y_test).callculate(data_real, window)
 data_real = data_real[window:]
 
-print("data_real", len(data_real), data_real)
-print("data_sma", len(y_pred), y_pred)
+# print("data_real", len(data_real), data_real)
+# print("data_sma", len(y_pred), y_pred)
 
-fig, ax = plt.subplots()
-ax.plot(data_real, label='Исходные данные')
-ax.plot(y_pred, label='Данные с SMA метода')
-ax.set_xlabel('Время (мин)')
-ax.set_ylabel('Цена, (руб)')
-ax.legend()
-plt.show()
+# fig, ax = plt.subplots()
+# ax.plot(data_real, label='Исходные данные')
+# ax.plot(y_pred, label='Данные с SMA метода')
+# ax.set_xlabel('Время (мин)')
+# ax.set_ylabel('Цена, (руб)')
+# ax.legend()
+# plt.show()
