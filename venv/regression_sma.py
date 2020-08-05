@@ -31,7 +31,7 @@ data_real = data_real[window:]
 # fig, ax = plt.subplots()
 # ax.plot(data_real, label='Исходные данные')
 # ax.plot(y_pred, label='Данные с SMA метода')
-# ax.set_xlabel('Время (мин)')
+# ax.set_xlabel('Время, (мин)')
 # ax.set_ylabel('Цена, (руб)')
 # ax.legend()
 # plt.show()
